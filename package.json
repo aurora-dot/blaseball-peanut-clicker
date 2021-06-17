@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "prompt-sync": "^4.2.0",
+    "puppeteer-extra": "^3.1.18",
+    "puppeteer-extra-plugin-stealth": "^2.7.8",
+    "random-useragent": "^0.5.0"
+  },
+  "name": "blaseball-peanut-clicker",
+  "description": "Blaseball Peanut Clicker :0",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aurora-dot/blaseball-peanut-clicker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aurora-dot/blaseball-peanut-clicker/issues"
+  },
+  "homepage": "https://github.com/aurora-dot/blaseball-peanut-clicker#readme"
+}
