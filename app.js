@@ -18,8 +18,9 @@ async function main() {
     });
 
 
-    puppeteer.launch({headless: false, defaultViewport: null,'ignoreHTTPSErrors' : true, 'args': ['--no-sandbox', '--disable-setuid-sandbox']}).then(async browser => {
-        
+    puppeteer.launch({headless: true, defaultViewport: null,'ignoreHTTPSErrors' : true, 'args': ['--no-sandbox', '--disable-setuid-sandbox']}).then(async browser => {
+        console.log('Setting up page...')
+
         // Create new page and set useragent
         
         var page = await browser.newPage();
@@ -34,6 +35,8 @@ async function main() {
 
         const navigationPromise = page.waitForNavigation();
         
+        console.log('Navigating to blaseball login and entering creds...')
+
         await page.goto('https://www.blaseball.com/login');
         await page.setViewport({ width: 939, height: 956 })
 
@@ -47,11 +50,9 @@ async function main() {
         await page.keyboard.press('Enter');
         
         await navigationPromise;
-        await page.setViewport({ width: 939, height: 956 });
-
+        console.log('Logged in and started eating peanuts!\n\n---\n\nCurrently Eating...')
 
         // Check peanut count, and click for given amount, if already zero exit
-
 
         await page.waitForSelector('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line');
         const originalPeanutCount = Number(await page.$eval('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line', el => el.textContent));
@@ -61,13 +62,13 @@ async function main() {
             const b1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
             b1.start(originalPeanutCount, 0);
 
-            for(i = 0; i < originalPeanutCount; i++) {
+            for (i = 0; i < originalPeanutCount; i++) {
                 await page.waitForSelector('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line');
                 await page.click('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line');
                 await new Promise(r => setTimeout(r, 4000));
                 b1.increment();
             }
-            console.log('Completed!');
+            console.log('Completed! \/o/');
         } else {
             console.log('Already 0 :)');
         }
