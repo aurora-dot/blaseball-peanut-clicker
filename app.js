@@ -1,12 +1,13 @@
 const puppeteer = require('puppeteer-extra');
 var fs = require('fs');
+const cliProgress = require('cli-progress');
 const randomUseragent = require('random-useragent');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(StealthPlugin());
 
 
 async function main() {
-    console.log('Blaseball Peanut Clicker!')
+    console.log('Blaseball Peanut Clicker!');
 
     // Load in user credentials
 
@@ -31,11 +32,12 @@ async function main() {
   
         // Go to website and login using json creds
 
-        const navigationPromise = page.waitForNavigation()
+        const navigationPromise = page.waitForNavigation();
         
-        await page.goto('https://www.blaseball.com/login')
+        await page.goto('https://www.blaseball.com/login');
+        await page.setViewport({ width: 939, height: 956 })
 
-        await navigationPromise
+        await navigationPromise;
 
         await page.waitForSelector('.Auth-SignupWrapper > .Modal > form > div:nth-child(1) > .Auth-Input')  
         await page.waitForSelector('.Auth-SignupWrapper > .Modal > form > div:nth-child(2) > .Auth-Input')
@@ -44,25 +46,31 @@ async function main() {
         await page.type('input[name=password]', credsJson['password'], {delay: 100});
         await page.keyboard.press('Enter');
         
-        await navigationPromise
+        await navigationPromise;
+        await page.setViewport({ width: 939, height: 956 });
 
-        
+
         // Check peanut count, and click for given amount, if already zero exit
 
 
-        await page.waitForSelector('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line')
-        const originalPeanutCount = Number(await page.$eval('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line', el => el.textContent))
+        await page.waitForSelector('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line');
+        const originalPeanutCount = Number(await page.$eval('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line', el => el.textContent));
+        
         if (originalPeanutCount !== 0) {
-            for(i = 0; i < originalPeanutCount; i++) {
-                await page.click('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line')        
-                await new Promise(r => setTimeout(r, 4000));
-            }
-            console.log('Completed!')
-        } else {
-            console.log('Already 0 :)')
-        }
 
-        await new Promise(r => setTimeout(r, 15000));
+            const b1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+            b1.start(originalPeanutCount, 0);
+
+            for(i = 0; i < originalPeanutCount; i++) {
+                await page.waitForSelector('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line');
+                await page.click('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line');
+                await new Promise(r => setTimeout(r, 4000));
+                b1.increment();
+            }
+            console.log('Completed!');
+        } else {
+            console.log('Already 0 :)');
+        }
     });
 };
 

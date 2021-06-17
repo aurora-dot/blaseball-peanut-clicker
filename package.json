@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "cli-progress": "^3.9.0",
     "fs": "^0.0.1-security",
     "prompt-sync": "^4.2.0",
     "puppeteer-extra": "^3.1.18",
