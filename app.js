@@ -64,7 +64,7 @@ async function main() {
 
             for (i = 0; i < originalPeanutCount; i++) {
                 await page.click('.Navigation-Top > .Navigation-User-Top > .Peanut-Container > .Navigation-CurrencyButton > .Peanut-Line');
-                await new Promise(r => setTimeout(r, 3000));
+                await new Promise(r => setTimeout(r, 3500));
                 b1.increment();
             }
             console.log('Completed! \/o/');
